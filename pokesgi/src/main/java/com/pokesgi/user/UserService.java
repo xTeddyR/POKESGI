@@ -6,4 +6,6 @@ package com.pokesgi.user;
 public interface UserService {
 
     void createUser(UserEntity userEntity);
+
+    boolean canConnect(String login, String password);
 }

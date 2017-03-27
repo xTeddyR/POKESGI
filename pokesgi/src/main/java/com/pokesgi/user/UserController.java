@@ -28,6 +28,13 @@ public class UserController {
     }
 
     @PostMapping
+    public boolean canConnect(@RequestParam(value = "login", required = true) String login,
+                              @RequestParam(value = "password", required = true) String password){
+
+        return userService.canConnect(login, password);
+    }
+
+    @PostMapping("/inscription")
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){

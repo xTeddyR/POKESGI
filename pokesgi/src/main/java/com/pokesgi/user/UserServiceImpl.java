@@ -19,4 +19,9 @@ public class UserServiceImpl implements UserService {
     public void createUser(UserEntity userEntity){
         userRepository.save(userEntity);
     }
+
+    @Override
+    public boolean canConnect(String login, String password) {
+        return userRepository.findByLoginAndPassword(login, password) != null ? true : false;
+    }
 }
