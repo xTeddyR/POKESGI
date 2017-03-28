@@ -15,6 +15,7 @@ public class UserController {
 
     private final UserService userService;
     private final Adapter adapter;
+    private static UserDTO currentUser;
 
     @Autowired
     public UserController(UserService userService){
@@ -28,10 +29,12 @@ public class UserController {
     }
 
     @PostMapping
-    public boolean canConnect(@RequestParam(value = "login", required = true) String login,
-                              @RequestParam(value = "password", required = true) String password){
+    public boolean canConnect(@RequestParam(value = "login") String login,
+                              @RequestParam(value = "password") String password){
 
-        return userService.canConnect(login, password);
+        currentUser = adapter.toUserDTO(userService.canConnect(login, password));
+
+        return currentUser != null ? true : false;
     }
 
     @PostMapping("/inscription")

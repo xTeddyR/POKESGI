@@ -1,5 +1,6 @@
 package com.pokesgi.user;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean canConnect(String login, String password) {
-        return userRepository.findByLoginAndPassword(login, password) != null ? true : false;
+    public UserEntity canConnect(String login, String password) {
+        return userRepository.findByLoginAndPassword(login, password);
     }
 }

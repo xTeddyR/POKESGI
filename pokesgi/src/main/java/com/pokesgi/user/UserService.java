@@ -7,5 +7,5 @@ public interface UserService {
 
     void createUser(UserEntity userEntity);
 
-    boolean canConnect(String login, String password);
+     UserEntity canConnect(String login, String password);
 }
