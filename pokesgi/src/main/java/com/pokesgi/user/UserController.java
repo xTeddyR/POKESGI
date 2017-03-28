@@ -28,6 +28,13 @@ public class UserController {
         return "Hello World !";
     }
 
+    @GetMapping("/deconnexion")
+    public boolean disconnectUser(){
+        currentUser = null;
+
+        return currentUser == null ? true : false;
+    }
+
     @PostMapping
     public boolean canConnect(@RequestParam(value = "login") String login,
                               @RequestParam(value = "password") String password){
