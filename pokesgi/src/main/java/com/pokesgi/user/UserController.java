@@ -10,7 +10,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
