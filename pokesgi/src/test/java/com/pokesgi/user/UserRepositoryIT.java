@@ -8,10 +8,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Calendar;
+import java.util.List;
 
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.*;
 
@@ -57,6 +57,9 @@ public class UserRepositoryIT {
         UserEntity userEntity = userRepository.findByLoginAndPassword(login, password);
 
         Assert.assertNotNull(userEntity);
+        Assert.assertEquals(firstTestUserId, userEntity.getIdUser());
+        Assert.assertEquals(login, userEntity.getLogin());
+        Assert.assertEquals(password, userEntity.getPassword());
     }
 
     @Test
@@ -67,5 +70,13 @@ public class UserRepositoryIT {
         UserEntity userEntity = userRepository.findByLoginAndPassword(login, password);
 
         Assert.assertNull(userEntity);
+    }
+
+    @Test
+    public void should_find_all_users(){
+        List<UserEntity> allUsers = userRepository.findAll();
+
+        Assert.assertNotNull(allUsers);
+        Assert.assertTrue(allUsers.size() > 0);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 /**
  * Created by ostro on 03/04/2017.
@@ -22,6 +23,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry stompEndpointRegistry) {
-        stompEndpointRegistry.addEndpoint("/gs-guide-websocket").withSockJS();
+        stompEndpointRegistry.addEndpoint("/pokesgi")
+                .addInterceptors(new HttpSessionHandshakeInterceptor()).withSockJS();
     }
 }
