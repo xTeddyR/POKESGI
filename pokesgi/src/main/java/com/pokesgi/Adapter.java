@@ -6,6 +6,8 @@ import com.pokesgi.user.UserEntity;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by ostro on 24/03/2017.
@@ -36,8 +38,12 @@ public class Adapter {
                 .firstname(userEntity.getFirstname())
                 .lastname(userEntity.getLastname())
                 .mail(userEntity.getMail())
-                .creationDate(userEntity.getCreationDate().toString())
-                .deleteDate(userEntity.getDeleteDate().toString())
+                .creationDate(userEntity.getCreationDate() != null ? userEntity.getCreationDate().toString() : "")
+                .deleteDate(userEntity.getDeleteDate() != null ? userEntity.getDeleteDate().toString() : "")
                 .build();
+    }
+
+    public List<UserDTO> toListUserDTO(List<UserEntity> userEntityList){
+        return userEntityList.stream().map(this::toUserDTO).collect(Collectors.toList());
     }
 }

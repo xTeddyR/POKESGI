@@ -3,19 +3,20 @@ package com.pokesgi.user;
 import com.pokesgi.Adapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.util.List;
 
-@RestController
-@RequestMapping("/")
+@Controller
 public class UserController {
 
     private final UserService userService;
     private final Adapter adapter;
-    private static UserDTO currentUser;
 
     @Autowired
     public UserController(UserService userService){
@@ -23,25 +24,31 @@ public class UserController {
         this.adapter = new Adapter();
     }
 
-    @GetMapping
-    public String homePage(){
-        return "Hello World !";
+    @GetMapping("/users")
+    public List<UserDTO> getAllUsers(){
+        return adapter.toListUserDTO(userService.getAllUsers());
     }
 
     @GetMapping("/deconnexion")
-    public boolean disconnectUser(){
-        currentUser = null;
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
+    public String disconnectUser(HttpSession session){
+        session.removeAttribute("currentUser");
 
-        return currentUser == null ? true : false;
+        return "redirect:http://localhost:8080/index.html";
     }
 
-    @PostMapping
-    public boolean canConnect(@RequestParam(value = "login") String login,
-                              @RequestParam(value = "password") String password){
+    @PostMapping("/connexion")
+    @ResponseStatus(HttpStatus.MOVED_PERMANENTLY)
+    public String canConnect(HttpSession session, @RequestParam(value = "login") String login,
+                             @RequestParam(value = "password") String password){
 
-        currentUser = adapter.toUserDTO(userService.canConnect(login, password));
+        UserEntity userEntity = userService.canConnect(login, password);
 
-        return currentUser != null ? true : false;
+        if (null != userEntity){
+            session.setAttribute("currentUser", adapter.toUserDTO(userEntity));
+            return "redirect:http://localhost:8080/chat.html";
+        }
+        return "redirect:http://localhost:8080/index.html";
     }
 
     @PostMapping("/inscription")
