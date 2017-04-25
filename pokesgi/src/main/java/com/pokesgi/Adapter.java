@@ -16,7 +16,7 @@ public class Adapter {
 
     public UserEntity toUserEntity(UserDTO userDTO) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date deleteDate = userDTO.getDeleteDate().isEmpty() ? null : format.parse(userDTO.getDeleteDate());
+        Date deleteDate = (userDTO.getDeleteDate() == null || userDTO.getDeleteDate().isEmpty()) ? null : format.parse(userDTO.getDeleteDate());
 
         return UserEntity.builder().idUser(userDTO.getId())
                 .login(userDTO.getLogin())
