@@ -31,7 +31,7 @@ public class Hand
         int index = 0 ;
         int topStraightValue = 0 ;
 
-        // Pour compter les rangs des cartes
+        // Pour comptabiliser les rangs des cartes
         for (int x = 0 ; x <= 13 ; x++)
         {
             ranks[x] = 0 ;
@@ -42,7 +42,7 @@ public class Hand
             ranks[ cards[x].getRank() ]++ ;
         }
 
-        // Pour tester la couleur
+        // Pour tester la combinaison couleur
         for (int x = 0 ; x < 4 ; x++)
         {
             if ( cards[x].getSuit() != cards[x+1].getSuit() )
@@ -53,25 +53,27 @@ public class Hand
         }
 
 
+        // Permet de gérer la hauteur des paires ou du brelan de la main
         for (int x = 13 ; x >= 1 ; x--)
         {
-            if (ranks[x] > sameCards)
+            if (ranks[x] > sameCards) // Si la combinaison (paire ou brelan) la plus haute est supérieure à l'ancienne plus haute
             {
-                if (sameCards != 1)
+                if (sameCards == 1) // Si l'ancienne combinaison (paire ou brelan) la plus haute n'a pas été initialisée (celle par défaut)
+                                    // La met comme combinaison la plus haute
                 {
                     largeGroupRank = x ;
                 }
 
-                else
+                else // Sinon, sauvegarde l'ancienne combinaison (paire ou brelan) la plus haute comme étant la moins haute
                 {
                     sameCards2 = sameCards ;
                     smallGroupRank = x ;
                 }
 
-                sameCards = ranks[x] ;
+                sameCards = ranks[x] ; // Sauvegarde la nouvelle combinaison la plus haute
             }
 
-            else if (ranks[x] > sameCards2)
+            else if (ranks[x] > sameCards2) // Sinon si, la combinaire (paire ou brelan) la plus haute est supérieure à l'ancienne moins haute
             {
                 sameCards2 = ranks[x] ;
                 smallGroupRank = x ;
