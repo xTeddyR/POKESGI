@@ -4,6 +4,8 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by ostro on 25/03/2017.
  */
@@ -24,5 +26,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserEntity canConnect(String login, String password) {
         return userRepository.findByLoginAndPassword(login, password);
+    }
+
+    @Override
+    public List<UserEntity> getAllUsers() {
+        return userRepository.findAll();
     }
 }

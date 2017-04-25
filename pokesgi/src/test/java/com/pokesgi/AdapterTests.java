@@ -61,6 +61,41 @@ public class AdapterTests {
     }
 
     @Test
+    public void should_create_userDTO_from_userEntity_2() throws ParseException {
+        Integer idUser = -1;
+        String login = "";
+        String password = "";
+        String username = "";
+        String firstname = "";
+        String lastname = "";
+        String mail = "";
+        Date creationDate = null;
+        Date deleteDate = null;
+
+        UserDTO userDTO = adapter.toUserDTO(UserEntity.builder()
+                .idUser(idUser)
+                .login(login)
+                .password(password)
+                .username(username)
+                .firstname(firstname)
+                .lastname(lastname)
+                .mail(mail)
+                .creationDate(creationDate)
+                .deleteDate(deleteDate).build());
+
+        Assert.assertNotNull(userDTO);
+        Assert.assertEquals(idUser, userDTO.getId());
+        Assert.assertEquals(login, userDTO.getLogin());
+        Assert.assertEquals(password, userDTO.getPassword());
+        Assert.assertEquals(username, userDTO.getUsername());
+        Assert.assertEquals(firstname, userDTO.getFirstname());
+        Assert.assertEquals(lastname, userDTO.getLastname());
+        Assert.assertEquals(mail, userDTO.getMail());
+        Assert.assertEquals("", userDTO.getCreationDate());
+        Assert.assertEquals("", userDTO.getDeleteDate());
+    }
+
+    @Test
     public void should_create_userEntity_from_userDTO() throws ParseException {
         Integer id = 1;
         String login = "login";

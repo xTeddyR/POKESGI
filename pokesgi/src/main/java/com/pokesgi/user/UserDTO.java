@@ -1,6 +1,8 @@
 package com.pokesgi.user;
 
 import lombok.*;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 
