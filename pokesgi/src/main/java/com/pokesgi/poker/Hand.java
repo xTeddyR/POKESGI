@@ -24,13 +24,14 @@ public class Hand
         }
 
         int[] ranks = new int[14] ;
-        int[] orderedRanks = new int[5] ;	 //miscellaneous cards that are not otherwise significant
+        int[] orderedRanks = new int[5] ;
         boolean flush = true, straight = false ;
         int sameCards = 1, sameCards2 = 1 ;
         int largeGroupRank = 0, smallGroupRank = 0 ;
         int index = 0 ;
         int topStraightValue = 0 ;
 
+        // Pour compter les rangs des cartes
         for (int x = 0 ; x <= 13 ; x++)
         {
             ranks[x] = 0 ;
@@ -41,22 +42,12 @@ public class Hand
             ranks[ cards[x].getRank() ]++ ;
         }
 
+        // Pour tester la couleur
         for (int x = 0 ; x < 4 ; x++)
         {
-            if (x == 3)
-            {
-                if (cards[x].getSuit() != cards[x + 1].getSuit())
-                {
-                    flush = false ;
-                }
-
-                break ;
-            }
-
-            if (cards[x].getSuit() != cards[x + 1].getSuit())
+            if ( cards[x].getSuit() != cards[x+1].getSuit() )
             {
                 flush = false ;
-
                 break ;
             }
         }
@@ -220,31 +211,31 @@ public class Hand
         {
 
             case 1 :
-                s = "carte haute" ;
+                s = "Carte haute" ;
                 break ;
             case 2 :
-                s = "paire de " + Card.rankAsString(value[1]) + "\'s" ;
+                s = "Paire de " + Card.rankAsString(value[1]) ;
                 break ;
             case 3 :
-                s = "double paire " + Card.rankAsString(value[1]) + " " + Card.rankAsString(value[2]) ;
+                s = "Double paire " + Card.rankAsString(value[1]) + " " + Card.rankAsString(value[2]) ;
                 break ;
             case 4 :
-                s = "brelan (triple paire) " + Card.rankAsString(value[1]) + "\'s" ;
+                s = "Brelan " + Card.rankAsString(value[1]) ;
                 break ;
             case 5 :
-                s = "quinte (suite) " + Card.rankAsString(value[1]) ;
+                s = "Quinte " + Card.rankAsString(value[1]) ;
                 break ;
             case 6 :
-                s = "flush (couleur)";
+                s = "Flush ";
                 break ;
             case 7 :
-                s = "full " + Card.rankAsString(value[1]) + " sur " + Card.rankAsString(value[2]) ;
+                s = "Full " + Card.rankAsString(value[1]) + " sur " + Card.rankAsString(value[2]) ;
                 break ;
             case 8 :
-                s = "carré " + Card.rankAsString(value[1]) ;
+                s = "Carré " + Card.rankAsString(value[1]) ;
                 break ;
             case 9 :
-                s = "quinte flush (suite et couleur) " + Card.rankAsString(value[1]) + " high" ;
+                s = "Quinte Flush " + Card.rankAsString(value[1]) ;
                 break ;
             default:
                 s = "error in Hand.display: value[0] contains invalid value" ;

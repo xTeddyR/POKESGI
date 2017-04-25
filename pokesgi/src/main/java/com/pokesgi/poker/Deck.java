@@ -18,9 +18,6 @@ public class Deck
     public Deck()
     {
         cards = new ArrayList<Card>() ;
-        int index_1, index_2 ;
-        Random generator = new Random() ;
-        Card temp ;
 
         for(short suitCount = 0 ; suitCount <= 3 ; suitCount++)
         {
@@ -30,12 +27,22 @@ public class Deck
             }
         }
 
+        Shuffle() ;
+    }
+
+    public void Shuffle()
+    {
         int size = cards.size() - 1 ;
 
-        for(int i = 0 ; i < 100 ; i++)
+        int index_1, index_2 ;
+        Random generator = new Random() ;
+
+        Card temp ;
+
+        for(short i = 0 ; i < 100 ; i++)
         {
-            index_1 = generator.nextInt( cards.size() - 1 ) ;
-            index_2 = generator.nextInt( cards.size() - 1 ) ;
+            index_1 = generator.nextInt( size ) ;
+            index_2 = generator.nextInt( size ) ;
 
             temp = cards.get( index_2 ) ;
             cards.set( index_2 , cards.get( index_1 ) ) ;
@@ -45,7 +52,7 @@ public class Deck
 
     public Card drawFromDeck()
     {
-        return cards.remove( cards.size()-1 ) ;
+        return cards.remove( cards.size() - 1 ) ;
     }
 
     public int getTotalCards()

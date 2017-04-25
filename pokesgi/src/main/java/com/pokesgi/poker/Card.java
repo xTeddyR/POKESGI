@@ -7,7 +7,6 @@ import lombok.Setter ;
 /**
  * Created by Samuel Bijou.
  */
-@AllArgsConstructor
 @Getter @Setter
 public class Card
 {
@@ -18,14 +17,21 @@ public class Card
     private static String[] ranks  = { "As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi" } ;
 
 
-    public static String rankAsString( int __rank )
+    public Card(short suit, short rank)
     {
-        return ranks[__rank - 1] ;
+        this.rank = rank ;
+        this.suit = suit ;
+    }
+
+
+    public static String rankAsString( int rank )
+    {
+        return ranks[rank] ;
     }
 
     public @Override String toString()
     {
-        return ranks[rank - 1] + " de " + suits[suit - 1] ;
+        return ranks[rank] + " de " + suits[suit] ;
     }
 
 }
