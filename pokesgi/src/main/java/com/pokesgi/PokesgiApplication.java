@@ -14,7 +14,8 @@ public class PokesgiApplication
 		// Pour tester
 		//SpringApplication.run(PokesgiApplication.class, args) ;
 
-		/*
+		/* TEST 1 */
+		// Nombre de cartes et défausse
 		Deck deck= new Deck() ;
 		Card C ;
 
@@ -25,31 +26,57 @@ public class PokesgiApplication
 			C = deck.drawFromDeck() ;
 			System.out.println( C.toString() ) ;
 		}
-		*/
 
-
+		/* TEST 2 */
+		// Création d'une main et évaluation
 		for (int i = 0 ; i < 100 ; i++)
 		{
-			Deck deck = new Deck() ;
-			Hand hand = new Hand(deck) ;
-			hand.display() ;
-			hand.displayAll() ;
+			Deck deck2 = new Deck() ;
+
+			Hand hand = new Hand(deck2) ;
+
+			hand.displayEvaluation() ;
+			hand.displayHand() ;
 		}
 
-
-		/*
+		/* TEST 3 */
+		// Création de deux mains, évaluations, et comparaison
 		for (int i = 0 ; i < 20000 ; i++)
 		{
-			Deck deck = new Deck() ;
-			Hand hand = new Hand(deck) ;
-			Hand hand2 = new Hand(deck) ;
-			hand.display() ;
-			hand.displayAll() ;
-			hand2.display() ;
-			hand2.displayAll() ;
+			Deck deck3 = new Deck() ;
 
-			System.out.println(hand.compareTo(hand2)) ;
+			System.out.println("\n[JOUEUR 1]") ;
+			Hand hand = new Hand(deck3) ;
+			hand.displayEvaluation() ;
+			hand.displayHand() ;
+
+			System.out.println("\n[JOUEUR 2]") ;
+			Hand hand2 = new Hand(deck3) ;
+			hand2.displayEvaluation() ;
+			hand2.displayHand() ;
+
+
+			int result = hand.compareTo(hand2) ;
+			String gagnant ;
+
+			System.out.println("\n{GAGNANT}") ;
+
+			if(result == 1)
+			{
+				gagnant = "Joueur 1" ;
+			}
+
+			else if(result == -1)
+			{
+				gagnant = "joueur 2" ;
+			}
+
+			else
+			{
+				gagnant = "égalité" ;
+			}
+
+			System.out.println(gagnant + "\n") ;
 		}
-		 */
 	}
 }

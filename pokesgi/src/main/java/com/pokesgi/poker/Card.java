@@ -26,12 +26,26 @@ public class Card
 
     public static String rankAsString( int rank )
     {
+        rank = convertToModulo(rank) ;
+
         return ranks[rank] ;
     }
 
     public @Override String toString()
     {
+        rank = convertToModulo(rank) ;
+
         return ranks[rank] + " de " + suits[suit] ;
+    }
+
+    public static int convertToModulo(int rank)
+    {
+        if(rank == 14)
+        {
+            return 0 ;
+        }
+
+        return rank ;
     }
 
 }
