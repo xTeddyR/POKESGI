@@ -2,6 +2,15 @@ body {
     background: #f5f5f5;
 }
 
+h2 {
+    text-align: center;
+}
+
+#divChat{
+    overflow: auto;
+    height: 200px;
+}
+
 #main-content {
     max-width: 940px;
     padding: 2em 3em;
@@ -11,4 +20,8 @@ body {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+
+#from_connexion{
+    margin-left: 30%;
 }

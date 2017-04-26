@@ -2,32 +2,41 @@
 <html>
 <head>
     <title>POKESGI</title>
+    <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/main.css" rel="stylesheet">
 </head>
 <body>
+<div id="main-content" class="container">
+    <h2>POKESGI</h2>
     <form id="from_connexion" method="post" action="/connexion">
-        <table>
-            <tr>
-                <td>
-                    Login :
-                </td>
-                <td>
-                    <input id="login" name="login" type="text">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Password :
-                </td>
-                <td>
-                    <input id="password" name="password" type="password">
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <input id="connexion" type="submit" value="Connexion" >
-                </td>
-            </tr>
-        </table>
-    </form>
+            <table id="tableConnexion">
+                <tr>
+                    <td>
+                        Login :
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="login" name="login" class="form-control" type="text">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Password :
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="password" name="password" class="form-control" type="password">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input id="connexion" type="submit" class="btn btn-default" value="Connexion" >
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
 </body>
 </html>
