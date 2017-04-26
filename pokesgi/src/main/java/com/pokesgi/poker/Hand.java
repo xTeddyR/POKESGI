@@ -11,12 +11,33 @@ public class Hand
 {
 
     private Card[] cards ;
-    private int[] value ;
+    private int[] values ;
 
+    private int score = 0 ;
+
+    private int[] ranks = new int[13] ;
+
+    private int[] orderedRanks = new int[5] ;
+
+    private int sameCards = -1, sameCards2 = -1 ;
+    private int largeGroupRank = -1, smallGroupRank = -1 ;
+
+    private boolean flush ;
+
+    private boolean straight ;
+    private int topStraightValue = -1 ;
+
+
+    public Hand(Card[] newCards)
+    {
+        cards = newCards ;
+
+        initHand() ;
+    }
 
     public Hand(Deck d)
     {
-        value = new int[6] ;
+        values = new int[6] ;
         cards = new Card[5] ;
 
         for (int x = 0 ; x < 5 ; x++)
@@ -24,134 +45,29 @@ public class Hand
             cards[x] = d.drawFromDeck() ;
         }
 
-
-        int[] ranks = countRanks() ;
-
-        int[] orderedRanks = orderRanksForSingleCards(ranks) ;
-
-
-        int sameCards = 1, sameCards2 = 1 ;
-        int largeGroupRank = 0, smallGroupRank = 0 ;
-
-        boolean flush = isFlush() ;
-
-        boolean straight = isStraight(ranks) ;
-        int topStraightValue = orderedRanks[0] ;
-
-
-        // Permet de gérer la hauteur des Paires ou du Brelan de la main
-        for (int x = 12 ; x >= 0 ; x--)
-        {
-            if (ranks[x] > sameCards) // Si la combinaison (Paire ou Brelan) la plus haute est supérieure à l'ancienne plus haute
-            {
-                if (sameCards == 1) // Si l'ancienne combinaison (Paire ou Brelan) la plus haute n'a pas été initialisée (celle par défaut)
-                                    // La met comme combinaison la plus haute
-                {
-                    largeGroupRank = x ;
-                }
-
-                else // Sinon, sauvegarde l'ancienne combinaison (Paire ou Brelan) la plus haute comme étant la moins haute
-                {
-                    sameCards2 = sameCards ;
-                    smallGroupRank = x ;
-                }
-
-                sameCards = ranks[x] ; // Sauvegarde la nouvelle combinaison (Paire ou Brelan) la plus haute
-            }
-
-            else if (ranks[x] > sameCards2) // Sinon si, la combinaire (Paire ou Brelan) la plus haute est supérieure à l'ancienne moins haute
-            {
-                sameCards2 = ranks[x] ;
-                smallGroupRank = x ;
-            }
-        }
-
-
-        // Initialise l'évaluation de la main
-        for (int x = 0 ; x <= 5 ; x++)
-        {
-            value[x] = 0 ;
-        }
-
-
-        // Commence l'évaluation de la main
-        if (sameCards == 1) // carte haute
-        {
-            value[0] = 1 ;
-            value[1] = orderedRanks[0] ;
-            value[2] = orderedRanks[1] ;
-            value[3] = orderedRanks[2] ;
-            value[4] = orderedRanks[3] ;
-            value[5] = orderedRanks[4] ;
-        }
-
-        if (sameCards == 2 && sameCards2 == 1) // Paire
-        {
-            value[0] = 2 ;
-            value[1] = largeGroupRank ;
-            value[2] = orderedRanks[0] ;
-            value[3] = orderedRanks[1] ;
-            value[4] = orderedRanks[2] ;
-        }
-
-        if (sameCards == 2 && sameCards2 == 2) // Double Paire
-        {
-            value[0] = 3 ;
-            value[1] = largeGroupRank > smallGroupRank ? largeGroupRank : smallGroupRank ;
-            value[2] = largeGroupRank < smallGroupRank ? largeGroupRank : smallGroupRank ;
-            value[3] = orderedRanks[0] ;
-        }
-
-        if (sameCards == 3 && sameCards2 != 2) // Brelan
-        {
-            value[0] = 4 ;
-            value[1] = largeGroupRank ;
-            value[2] = orderedRanks[0] ;
-            value[3] = orderedRanks[1] ;
-        }
-
-        if (straight && !flush) // Suite (Quinte)
-        {
-            value[0] = 5 ;
-            value[1] = topStraightValue ;
-        }
-
-        if (flush && !straight) // Couleur (Flush)
-        {
-            value[0] = 6 ;
-            value[1] = orderedRanks[0] ;
-            value[2] = orderedRanks[1] ;
-            value[3] = orderedRanks[2] ;
-            value[4] = orderedRanks[3] ;
-            value[5] = orderedRanks[4] ;
-        }
-
-        if (sameCards == 3 && sameCards2 == 2) // Full
-        {
-            value[0] = 7 ;
-            value[1] = largeGroupRank ;
-            value[2] = smallGroupRank ;
-        }
-
-        if (sameCards == 4) // Carré
-        {
-            value[0] = 8 ;
-            value[1] = largeGroupRank ;
-            value[2] = orderedRanks[0] ;
-        }
-
-        if (straight && flush) // Suite et couleur (Quinte Flush)
-        {
-            value[0] = 9 ;
-            value[1] = topStraightValue ;
-        }
+        initHand() ;
     }
 
 
-    public int[] countRanks()
+    public void initHand()
     {
-        int[] ranks = new int[13] ;
+        countRanks() ;
 
+        orderRanksForSingleCards() ;
+
+
+        flush = isFlush() ;
+
+        straight = isStraight() ;
+        topStraightValue = orderedRanks[0] ;
+
+        searchCombinaisons() ;
+
+        evaluateHand() ;
+    }
+
+    public void countRanks()
+    {
         // Pour comptabiliser les rangs des cartes
         for (int x = 0 ; x <= 12 ; x++)
         {
@@ -162,13 +78,10 @@ public class Hand
         {
             ranks[ cards[x].getRank() ]++ ;
         }
-
-        return ranks ;
     }
 
-    public int[] orderRanksForSingleCards(int[] ranks)
+    public void orderRanksForSingleCards()
     {
-        int[] orderedRanks = new int[5] ;
         int index = 0 ;
 
         // Range les rangs des cartes seules, fais l'As en premier vu que c'est la carte la plus forte mais en indice 0
@@ -186,8 +99,6 @@ public class Hand
                 index++ ;
             }
         }
-
-        return orderedRanks ;
     }
 
     public boolean isFlush()
@@ -204,7 +115,7 @@ public class Hand
         return true ;
     }
 
-    public boolean isStraight(int[] ranks)
+    public boolean isStraight()
     {
         // Pour les suites
         for (int x = 1 ; x <= 8 ; x++)
@@ -224,53 +135,203 @@ public class Hand
         return false ;
     }
 
-    public int compareTo(Hand that)
+    public void searchCombinaisons()
     {
-        for (int x = 0 ; x < 6 ; x++)
+        // Permet de gérer la hauteur des Paires ou du Brelan de la main
+        for (int x = 12 ; x >= 0 ; x--)
         {
-            if (this.value[x] > that.value[x])
-                return 1 ;
-            else if (this.value[x] != that.value[x])
-                return -1 ;
+            if (ranks[x] > sameCards) // Si la combinaison (Paire ou Brelan) la plus haute est supérieure à l'ancienne plus haute
+            {
+                if (sameCards != -1) // Si l'ancienne combinaison (Paire ou Brelan) la plus haute n'a pas été initialisée (celle par défaut)
+                {
+                    sameCards2 = sameCards ;
+                    smallGroupRank = largeGroupRank ;
+                }
+
+                sameCards = ranks[x] ; // Sauvegarde la nouvelle combinaison (Paire ou Brelan) la plus haute
+                largeGroupRank = x ;
+            }
+
+            else if (ranks[x] > sameCards2) // Sinon si, la combinaire (Paire ou Brelan) la plus haute est supérieure à l'ancienne moins haute
+            {
+                sameCards2 = ranks[x] ;
+                smallGroupRank = x ;
+            }
+        }
+    }
+
+    public void evaluateHand()
+    {
+        // Initialise l'évaluation de la main
+        for (int x = 0 ; x <= 5 ; x++)
+        {
+            values[x] = 0 ;
         }
 
-        return 0 ; // Si les mains sont égales
+
+        // Commence l'évaluation de la main
+        if (straight && flush) // Suite et couleur (Quinte Flush)
+        {
+            score = 9 ;
+
+            values[0] = orderedRanks[0] ;
+            values[1] = orderedRanks[1] ;
+            values[2] = orderedRanks[2] ;
+            values[3] = orderedRanks[3] ;
+            values[4] = orderedRanks[4] ;
+        }
+
+        else if (sameCards == 4) // Carré
+        {
+            score = 8 ;
+
+            values[0] = largeGroupRank ;
+            values[1] = largeGroupRank ;
+            values[2] = largeGroupRank ;
+            values[3] = largeGroupRank ;
+            values[4] = smallGroupRank ;
+        }
+
+        else if (sameCards == 3 && sameCards2 == 2) // Full
+        {
+            score = 7 ;
+
+            values[0] = largeGroupRank ;
+            values[1] = largeGroupRank ;
+            values[2] = largeGroupRank ;
+            values[3] = smallGroupRank ;
+            values[4] = smallGroupRank ;
+        }
+
+        else if (flush && !straight) // Couleur (Flush)
+        {
+            score = 6 ;
+
+            values[0] = orderedRanks[0] ;
+            values[1] = orderedRanks[1] ;
+            values[2] = orderedRanks[2] ;
+            values[3] = orderedRanks[3] ;
+            values[4] = orderedRanks[4] ;
+        }
+
+        else if (straight && !flush) // Suite (Quinte)
+        {
+            score = 5 ;
+
+            values[0] = orderedRanks[0] ;
+            values[1] = orderedRanks[1] ;
+            values[2] = orderedRanks[2] ;
+            values[3] = orderedRanks[3] ;
+            values[4] = orderedRanks[4] ;
+        }
+
+        else if (sameCards == 3 && sameCards2 != 2) // Brelan
+        {
+            score = 4 ;
+
+            values[0] = largeGroupRank ;
+            values[1] = largeGroupRank ;
+            values[2] = largeGroupRank ;
+            values[3] = orderedRanks[0] ;
+            values[4] = orderedRanks[1] ;
+        }
+
+        else if (sameCards == 2 && sameCards2 == 2) // Double Paire
+        {
+            score = 3 ;
+
+            values[0] = largeGroupRank > smallGroupRank ? largeGroupRank : smallGroupRank ;
+            values[1] = largeGroupRank > smallGroupRank ? largeGroupRank : smallGroupRank ;
+            values[2] = largeGroupRank < smallGroupRank ? largeGroupRank : smallGroupRank ;
+            values[3] = largeGroupRank < smallGroupRank ? largeGroupRank : smallGroupRank ;
+            values[4] = orderedRanks[0] ;
+        }
+
+        else if (sameCards == 2 && sameCards2 == 1) // Paire
+        {
+            score = 2 ;
+
+            values[0] = largeGroupRank ;
+            values[1] = largeGroupRank ;
+            values[2] = orderedRanks[0] ;
+            values[3] = orderedRanks[1] ;
+            values[4] = orderedRanks[2] ;
+        }
+
+        if (sameCards == 1) // carte haute
+        {
+            score = 1 ;
+
+            values[0] = orderedRanks[0] ;
+            values[1] = orderedRanks[1] ;
+            values[2] = orderedRanks[2] ;
+            values[3] = orderedRanks[3] ;
+            values[4] = orderedRanks[4] ;
+        }
+    }
+
+    public int compareTo(Hand that)
+    {
+        int result = 0 ;
+
+        if(this.getScore() > that.getScore())
+        {
+            result = 1 ;
+        }
+
+        else if(this.getScore() > that.getScore())
+        {
+            result = -1 ;
+        }
+
+        else
+        {
+            for (int x = 0 ; x < 5 ; x++)
+            {
+                if (this.values[x] > that.values[x])
+                    result = 1 ;
+                else if (this.values[x] != that.values[x])
+                    result = -1 ;
+            }
+        }
+
+        return result ;
     }
 
     public void displayEvaluation()
     {
         String result ;
 
-        switch( value[0] )
+        switch( score )
         {
             case 1 :
-                result = "{CARTE} haute de " + Card.rankAsString(value[1]) ;
+                result = "{CARTE} haute de " + Card.rankAsString(values[0]) ;
                 break ;
             case 2 :
-                result = "{PAIRE} de " + Card.rankAsString(value[1]) ;
+                result = "{PAIRE} de " + Card.rankAsString(values[0]) ;
                 break ;
             case 3 :
-                result = "{DOUBLE PAIRE} de " + Card.rankAsString(value[1]) + " sur " + Card.rankAsString(value[2]) ;
+                result = "{DOUBLE PAIRE} de " + Card.rankAsString(largeGroupRank) + " sur " + Card.rankAsString(smallGroupRank) ;
                 break ;
             case 4 :
-                result = "{BRELAN} de " + Card.rankAsString(value[1]) ;
+                result = "{BRELAN} de " + Card.rankAsString(values[0]) ;
                 break ;
             case 5 :
-                result = "{QUINTE} à " + Card.rankAsString(value[1]) ;
+                result = "{QUINTE} à " + Card.rankAsString(values[0]) ;
                 break ;
             case 6 :
                 result = "{FLUSH} de " + cards[0].getSuit() ;
                 break ;
             case 7 :
-                result = "{FULL} de " + Card.rankAsString(value[1]) + " sur " + Card.rankAsString(value[2]) ;
+                result = "{FULL} de " + Card.rankAsString(largeGroupRank) + " sur " + Card.rankAsString(smallGroupRank) ;
                 break ;
             case 8 :
-                result = "{CARRE} de " + Card.rankAsString(value[1]) ;
+                result = "{CARRE} de " + Card.rankAsString(values[0]) ;
                 break ;
             case 9 :
-                result = "{QUINTE FLUSH} à " + Card.rankAsString(value[1]) + " de " + cards[0].getSuit() ;
+                result = "{QUINTE FLUSH} à " + Card.rankAsString(values[0]) + " de " + cards[0].getSuit() ;
                 break ;
-            default:
+            default :
                 result = "error in Hand.display: value[0] contains invalid value" ;
         }
 
