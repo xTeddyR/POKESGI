@@ -12,7 +12,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ostro on 29/03/2017.
@@ -129,5 +131,54 @@ public class AdapterTests {
         Assert.assertEquals(mail, userEntity.getMail());
         Assert.assertEquals(format.parse(creationDate), userEntity.getCreationDate());
         Assert.assertEquals(format.parse(deleteDate), userEntity.getDeleteDate());
+    }
+
+    @Test
+    public void should_create_userDTOList_from_userEntityList(){
+        List<UserEntity> userEntities = new ArrayList<>();
+        userEntities.add(UserEntity.builder()
+                .idUser(1)
+                .login("login")
+                .password("password")
+                .username("username")
+                .firstname("firstname")
+                .lastname("lastname")
+                .mail("mail")
+                .creationDate(null)
+                .deleteDate(null).build());
+
+        userEntities.add(UserEntity.builder()
+                .idUser(2)
+                .login("password")
+                .password("login")
+                .username("firstname")
+                .firstname("lastname")
+                .lastname("username")
+                .mail("address")
+                .creationDate(null)
+                .deleteDate(null).build());
+
+        List<UserDTO> userDTOS = adapter.toListUserDTO(userEntities);
+
+        Assert.assertNotNull(userDTOS);
+        Assert.assertEquals(userEntities.size(), userDTOS.size());
+        Assert.assertEquals(userEntities.get(0).getIdUser(), userDTOS.get(0).getId());
+        Assert.assertEquals(userEntities.get(1).getIdUser(), userDTOS.get(1).getId());
+        Assert.assertEquals(userEntities.get(0).getLogin(), userDTOS.get(0).getLogin());
+        Assert.assertEquals(userEntities.get(1).getLogin(), userDTOS.get(1).getLogin());
+        Assert.assertEquals(userEntities.get(0).getPassword(), userDTOS.get(0).getPassword());
+        Assert.assertEquals(userEntities.get(1).getPassword(), userDTOS.get(1).getPassword());
+        Assert.assertEquals(userEntities.get(0).getUsername(), userDTOS.get(0).getUsername());
+        Assert.assertEquals(userEntities.get(1).getUsername(), userDTOS.get(1).getUsername());
+        Assert.assertEquals(userEntities.get(0).getFirstname(), userDTOS.get(0).getFirstname());
+        Assert.assertEquals(userEntities.get(1).getFirstname(), userDTOS.get(1).getFirstname());
+        Assert.assertEquals(userEntities.get(0).getLastname(), userDTOS.get(0).getLastname());
+        Assert.assertEquals(userEntities.get(1).getLastname(), userDTOS.get(1).getLastname());
+        Assert.assertEquals(userEntities.get(0).getMail(), userDTOS.get(0).getMail());
+        Assert.assertEquals(userEntities.get(1).getMail(), userDTOS.get(1).getMail());
+        Assert.assertEquals("", userDTOS.get(0).getCreationDate());
+        Assert.assertEquals("", userDTOS.get(1).getCreationDate());
+        Assert.assertEquals("", userDTOS.get(0).getDeleteDate());
+        Assert.assertEquals("", userDTOS.get(1).getDeleteDate());
     }
 }
