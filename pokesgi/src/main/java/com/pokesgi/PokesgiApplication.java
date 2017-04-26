@@ -11,9 +11,9 @@ public class PokesgiApplication {
 	public static void main(String[] args)
 	{
 		// Pour tester
-		//SpringApplication.run(PokesgiApplication.class, args) ;
+		SpringApplication.run(PokesgiApplication.class, args) ;
 
-		Deck deck= new Deck() ;
+		/*Deck deck= new Deck() ;
 		Card C ;
 
 		System.out.println( deck.getTotalCards() ) ;
@@ -22,7 +22,7 @@ public class PokesgiApplication {
 		{
 			C = deck.drawFromDeck() ;
 			System.out.println( C.toString() ) ;
-		}
+		}*/
 
 		/*
 		for (int i = 0 ; i < 100 ; i++)
