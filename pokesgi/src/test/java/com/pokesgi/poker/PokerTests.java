@@ -1,15 +1,10 @@
 package com.pokesgi.poker ;
 
 import org.junit.Test ;
-import org.junit.runner.RunWith ;
-import org.springframework.boot.test.context.SpringBootTest ;
-import org.springframework.test.context.junit4.SpringRunner ;
 
 /**
- * Created by Samuel Bijou on 26/04/2017.
+ * Created by Samuel Bijou on 19/04/2017.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class PokerTests
 {
 
@@ -18,19 +13,23 @@ public class PokerTests
     /* TEST 1 */
     // Nombre de cartes
     @Test
-    public void shouldGiveNumberOfCards()
+    public void should_Give_Number_Of_Cards()
     {
+        System.out.println("\n[TEST DE TAILLE DU PAQUET]") ;
+
         Deck deck= new Deck() ;
         Card C ;
 
-        System.out.println( deck.getTotalCards() ) ;
+        System.out.println( deck.getTotalCards() + "\n") ;
     }
 
     /* TEST 2 */
     // Défausse de cartes
     @Test
-    public void shouldDrawCardsFromDeck()
+    public void should_Draw_Cards_From_Deck()
     {
+        System.out.println("\n[TEST DE DEFAUSSE DU PAQUET]") ;
+
         Deck deck= new Deck() ;
         Card C ;
 
@@ -39,38 +38,58 @@ public class PokerTests
             C = deck.drawFromDeck() ;
             System.out.println( C.toString() ) ;
         }
+
+        System.out.println("\n") ;
     }
 
     /* TEST 3 */
     // Création d'une main et évaluation
-    public void shouldEvaluateHands()
+    @Test
+    public void should_Evaluate_Hand()
     {
+        System.out.println("\n[TEST D'EVALUATION D'UNE MAIN]") ;
+
         for (int i = 0 ; i < 100 ; i++)
         {
             Deck deck2 = new Deck() ;
 
             Hand hand = new Hand(deck2) ;
+            hand.evaluateHand() ;
 
             hand.displayEvaluation() ;
             hand.displayHand() ;
+
+            System.out.println("\n") ;
         }
     }
 
     /* TEST 4 */
     // Création de deux mains, évaluations, et comparaison
-    public void shouldComparateTwoHands()
+    @Test
+    public void should_Comparate_Two_Hands()
     {
-        for (int i = 0 ; i < 20000 ; i++)
+        System.out.println("\n[TEST DE COMPARAISON DE DEUX MAINS]") ;
+
+        for (int i = 0 ; i < 1000 ; i++)
         {
             Deck deck3 = new Deck() ;
 
             System.out.println("\n[JOUEUR 1]") ;
+
             Hand hand = new Hand(deck3) ;
+
+            hand.evaluateHand() ;
+
             hand.displayEvaluation() ;
             hand.displayHand() ;
 
+
             System.out.println("\n[JOUEUR 2]") ;
+
             Hand hand2 = new Hand(deck3) ;
+
+            hand2.evaluateHand() ;
+
             hand2.displayEvaluation() ;
             hand2.displayHand() ;
 

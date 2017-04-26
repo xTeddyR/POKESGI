@@ -4,47 +4,47 @@ import lombok.Getter ;
 import lombok.Setter ;
 
 /**
- * Created by Samuel Bijou.
+ * Created by Samuel Bijou on 11/04/2017.
  */
 @Getter @Setter
 public class Card
 {
 
-    private int rank, suit ;
+    private int suit, rank ;
 
-    private static String[] suits = { "coeur", "pique", "carreau", "trèfle" } ;
-    private static String[] ranks  = { "As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi" } ;
+    private static final String[] suits = { "Coeur", "Pique", "Carreau", "Trèfle" } ;
+    private static final String[] ranks = { "As", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Valet", "Reine", "Roi" } ;
 
 
-    public Card(short suit, short rank)
+    public Card(int newSuit, int newRank)
     {
-        this.rank = rank ;
-        this.suit = suit ;
+        this.rank = newRank ;
+        this.suit = newSuit ;
     }
 
 
-    public static String rankAsString( int rank )
+    public static String rankAsString( int newRank )
     {
-        rank = convertToModulo(rank) ;
+        newRank = convertRank(newRank) ;
 
-        return ranks[rank] ;
+        return ranks[newRank] ;
     }
 
     public @Override String toString()
     {
-        rank = convertToModulo(rank) ;
+        rank = convertRank(rank) ;
 
         return ranks[rank] + " de " + suits[suit] ;
     }
 
-    public static int convertToModulo(int rank)
+    public static int convertRank(int newRank)
     {
-        if(rank == 14)
+        if(newRank == 14)
         {
             return 0 ;
         }
 
-        return rank ;
+        return newRank ;
     }
 
 }

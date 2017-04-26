@@ -10,8 +10,8 @@ import lombok.Setter ;
 public class Hand
 {
 
-    private Card[] cards ;
-    private int[] values ;
+    private Card[] cards = new Card[5] ;
+    private int[] values = new int[5] ;
 
     private int score = 0 ;
 
@@ -30,26 +30,35 @@ public class Hand
 
     public Hand(Card[] newCards)
     {
-        cards = newCards ;
-
-        initHand() ;
+        for (int x = 0 ; x < newCards.length ; x++)
+        {
+            cards[x] = newCards[x] ;
+        }
     }
 
-    public Hand(Deck d)
+    public Hand(Deck deck)
     {
-        values = new int[6] ;
-        cards = new Card[5] ;
-
         for (int x = 0 ; x < 5 ; x++)
         {
-            cards[x] = d.drawFromDeck() ;
+            cards[x] = deck.drawFromDeck() ;
+        }
+    }
+
+    public Hand(Deck deck, Card[] deckCards)
+    {
+        for (int x = 0 ; x < 2 ; x++)
+        {
+            cards[x] = deck.drawFromDeck() ;
         }
 
-        initHand() ;
+        for (int x = 0 ; x < 3 ; x++)
+        {
+            cards[x + 2] = deckCards[x] ;
+        }
     }
 
 
-    public void initHand()
+    public void evaluateHand()
     {
         countRanks() ;
 
@@ -59,11 +68,15 @@ public class Hand
         flush = isFlush() ;
 
         straight = isStraight() ;
-        topStraightValue = orderedRanks[0] ;
+
+        if(straight)
+        {
+            topStraightValue = orderedRanks[0] ;
+        }
 
         searchCombinaisons() ;
 
-        evaluateHand() ;
+        evaluateScore() ;
     }
 
     public void countRanks()
@@ -160,10 +173,10 @@ public class Hand
         }
     }
 
-    public void evaluateHand()
+    public void evaluateScore()
     {
         // Initialise l'évaluation de la main
-        for (int x = 0 ; x <= 5 ; x++)
+        for (int x = 0 ; x < 5 ; x++)
         {
             values[x] = 0 ;
         }

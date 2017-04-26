@@ -28,11 +28,11 @@ public class Deck
             }
         }
 
-        Shuffle() ;
+        shuffle() ;
     }
 
 
-    public void Shuffle()
+    public void shuffle()
     {
         int size = cards.size() - 1 ;
 
