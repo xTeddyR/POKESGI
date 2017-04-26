@@ -12,6 +12,5 @@ import lombok.*;
 @Setter
 public class MessageDTO {
 
-    private String name;
     private String message;
 }

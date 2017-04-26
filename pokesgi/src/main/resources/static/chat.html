@@ -13,9 +13,24 @@
 <div id="main-content" class="container">
     <div class="row">
         <div class="col-md-6">
-            <label>POKESGI</label><br>
+            <h2>POKESGI</h2><br>
             <button id="disconnect" class="btn btn-default" type="button" onclick="disconnect()">Disconnect</button>
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Chat</h3>
+        </div>
+    </div>
+    <div id="divChat" class="row">
+        <div class="col-md-12">
+            <table id="conversation" class="table table-striped">
+                <tbody id="chat">
+                </tbody>
+            </table>
+        </div><br>
+    </div>
+    <div class="row">
         <div class="col-md-6">
             <form class="form-inline">
                 <div class="form-group">
@@ -24,19 +39,6 @@
                 </div>
                 <button id="send" class="btn btn-default" type="submit">Send</button>
             </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table id="conversation" class="table table-striped">
-                <thead>
-                <tr>
-                    <th>Chat</th>
-                </tr>
-                </thead>
-                <tbody id="chat">
-                </tbody>
-            </table>
         </div>
     </div>
     </form>

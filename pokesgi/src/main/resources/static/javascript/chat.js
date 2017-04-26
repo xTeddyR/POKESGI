@@ -25,6 +25,7 @@ function sendMessage(message) {
 
 function showGreeting(message) {
     $("#chat").append("<tr><td>" + message + "</td></tr>");
+    $("#divChat").scrollTop($("#divChat")[0].scrollHeight);
 }
 
 $(function () {
