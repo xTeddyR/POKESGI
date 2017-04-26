@@ -59,7 +59,7 @@ public class CardTests
     @Test
     public void should_Convert_Rank()
     {
-        int rank = 14 ;
+        int rank = 13 ;
 
         Assert.assertEquals(0, Card.convertRank(rank)) ;
     }

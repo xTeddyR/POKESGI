@@ -84,10 +84,10 @@ public class Hand
     {
         int index = 0 ;
 
-        // Range les rangs des cartes seules, fais l'As en premier vu que c'est la carte la plus forte mais en indice 0
+        // Range les rangs des cartes seules, fait l'As en premier vu que c'est la carte la plus forte mais en indice 0
         if (ranks[0] == 1)
         {
-            orderedRanks[index] = 14 ;
+            orderedRanks[index] = 13 ;
             index++ ;
         }
 

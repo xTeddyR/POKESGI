@@ -7,9 +7,11 @@ package com.pokesgi.poker ;
 import com.pokesgi.user.UserDTO ;
 import lombok.AllArgsConstructor ;
 import lombok.Getter ;
+import lombok.NoArgsConstructor ;
 import lombok.Setter ;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter @Setter
 public class Game
 {
@@ -20,18 +22,25 @@ public class Game
     private int[] usersScore = new int[10] ;
 
 
-    public void launchGame()
+    public void startGame()
     {
         Deck deck = new Deck() ;
 
-
-        giveCardsAndEvaluate(deck) ;
-
-
-        String winners = searchWinner() ;
+        if(checkPlayersReady())
+        {
+            giveCardsAndEvaluate(deck) ;
 
 
-        System.out.println("\nGagnant(s) : " + winners + "\n") ;
+            String winners = searchWinner() ;
+
+
+            System.out.println("\nGagnant(s) : " + winners + "\n") ;
+        }
+
+        else
+        {
+            System.out.println("\nTous les joueurs ne sont pas prêts\n") ;
+        }
     }
 
     public int addPlayer(UserDTO newUser)
@@ -49,12 +58,24 @@ public class Game
         return -1 ;
     }
 
-    public void removePlayer(int userIndex)
+    public UserDTO removePlayer(int userIndex)
     {
-        users[userIndex] = null ;
+        UserDTO result = null ;
+
+        if(userIndex >= 0 && userIndex < 10)
+        {
+            result = users[userIndex] ;
+
+            users[userIndex] = null ;
+            usersReady[userIndex] = false ;
+            usersHand[userIndex] = null ;
+            usersScore[userIndex] = 0 ;
+        }
+
+        return result ;
     }
 
-    public boolean allPlayerReady()
+    public boolean checkPlayersReady()
     {
         boolean playerExist = false ;
 
@@ -64,7 +85,7 @@ public class Game
             {
                 playerExist = true ;
 
-                if(usersReady[x] == false)
+                if(usersReady[x] == null)
                 {
                     return false ;
                 }
@@ -86,7 +107,7 @@ public class Game
     {
         for(int x = 0 ; x < users.length ; x++)
         {
-            if(users[x] == null)
+            if(users[x] != null)
             {
                 Card[] userCards = new Card[5] ;
                 userCards[0] = deck.drawFromDeck() ;

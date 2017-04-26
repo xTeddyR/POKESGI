@@ -39,7 +39,7 @@ public class Card
 
     public static int convertRank(int newRank)
     {
-        if(newRank == 14)
+        if(newRank == 13)
         {
             return 0 ;
         }
