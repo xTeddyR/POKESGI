@@ -51,7 +51,10 @@ public class Game
 
     public void removePlayer(int userIndex)
     {
-        users[userIndex] = null ;
+        if(userIndex < users.length)
+        {
+            users[userIndex] = null ;
+        }
     }
 
     public boolean allPlayerReady()
@@ -86,7 +89,7 @@ public class Game
     {
         for(int x = 0 ; x < users.length ; x++)
         {
-            if(users[x] == null)
+            if(users[x] != null)
             {
                 Card[] userCards = new Card[5] ;
                 userCards[0] = deck.drawFromDeck() ;
