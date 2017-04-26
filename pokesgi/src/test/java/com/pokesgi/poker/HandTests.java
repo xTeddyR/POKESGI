@@ -46,28 +46,6 @@ public class HandTests
         Assert.assertNotNull(hand.getCards()[4]) ;
     }
 
-    @Test
-    public void should_Create_Hand_With_Deck_And_Cards()
-    {
-        Deck deck = new Deck() ;
-
-        int size = deck.getCards().size() ;
-        Card[] deckCards = new Card[3] ;
-        deckCards[0] = deck.drawFromDeck() ;
-        deckCards[1] = deck.drawFromDeck() ;
-        deckCards[2] = deck.drawFromDeck() ;
-
-        Hand hand = new Hand(deck, deckCards) ;
-
-        Assert.assertNotNull(hand) ;
-
-        Assert.assertNotNull(hand.getCards()[0]) ;
-        Assert.assertNotNull(hand.getCards()[1]) ;
-        Assert.assertEquals(deckCards[0], hand.getCards()[2]) ;
-        Assert.assertEquals(deckCards[1], hand.getCards()[3]) ;
-        Assert.assertEquals(deckCards[2], hand.getCards()[4]) ;
-    }
-
 
     @Test
     public void should_Evaluate_Hand()

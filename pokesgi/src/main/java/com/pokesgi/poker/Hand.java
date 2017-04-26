@@ -44,19 +44,6 @@ public class Hand
         }
     }
 
-    public Hand(Deck deck, Card[] deckCards)
-    {
-        for (int x = 0 ; x < 2 ; x++)
-        {
-            cards[x] = deck.drawFromDeck() ;
-        }
-
-        for (int x = 0 ; x < 3 ; x++)
-        {
-            cards[x + 2] = deckCards[x] ;
-        }
-    }
-
 
     public void evaluateHand()
     {
