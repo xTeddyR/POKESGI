@@ -31,9 +31,9 @@ public class UserRepositoryIT {
     @Before
     public void initialize_data(){
         UserEntity userEntity = UserEntity.builder()
-                .login("login")
-                .password("password")
-                .username("Testeur")
+                .login("loginTest")
+                .password("passwordTest")
+                .username("Test")
                 .firstname("")
                 .lastname("")
                 .creationDate(Calendar.getInstance().getTime())
@@ -51,8 +51,8 @@ public class UserRepositoryIT {
 
     @Test
     public void should_match_login_and_password(){
-        String login = "login";
-        String password = "password";
+        String login = "loginTest";
+        String password = "passwordTest";
 
         UserEntity userEntity = userRepository.findByLoginAndPassword(login, password);
 

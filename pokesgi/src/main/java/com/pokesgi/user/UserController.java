@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<UserDTO> getAllUsers(){
+    public @ResponseBody List<UserDTO> getAllUsers(){
         return adapter.toListUserDTO(userService.getAllUsers());
     }
 
@@ -55,13 +55,12 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            System.out.println("error validation");
             throw new CreationFailedException();
         }
 
         try {
             userService.createUser(adapter.toUserEntity(userDTO));
-        } catch (ParseException e) {
+        } catch (Exception e) {
             throw new CreationFailedException();
         }
     }
